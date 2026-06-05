@@ -226,65 +226,158 @@ footer{
 }
 
 /* ── LOADER · ENVELOPE FLOW ───────────────────────────── */
+/* ── LOADER EDITORIAL ─────────────────────────────────── */
 #loader{
   position:fixed;inset:0;z-index:9999;
-  background:#1a1410;
+  background:var(--ink2);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  overflow:hidden;
+  overflow:hidden;cursor:pointer;
+  /* Textura papel */
+  background-image:
+    radial-gradient(at 18% 14%, rgba(184,137,58,.07) 0, transparent 50%),
+    radial-gradient(at 82% 86%, rgba(194,90,58,.05) 0, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(245,233,212,.0) 0, transparent 60%);
 }
-.ld-bg{
-  position:absolute;inset:0;
-  background:url('sobre.png') center/cover no-repeat;
-  opacity:0;animation:ldFade 1.2s ease .2s forwards;
+
+/* Ornamento corner sutil */
+.ld-corner{position:absolute;width:28px;height:28px;border-style:solid;border-color:rgba(184,137,58,.3);border-width:0;}
+.ld-corner.tl{top:24px;left:24px;border-top-width:1px;border-left-width:1px}
+.ld-corner.tr{top:24px;right:24px;border-top-width:1px;border-right-width:1px}
+.ld-corner.bl{bottom:24px;left:24px;border-bottom-width:1px;border-left-width:1px}
+.ld-corner.br{bottom:24px;right:24px;border-bottom-width:1px;border-right-width:1px}
+.ld-corner{opacity:0;animation:ldFadeUp .8s ease 1.2s forwards}
+
+/* Anillos concéntricos */
+.ld-rings{
+  position:absolute;width:320px;height:320px;
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  pointer-events:none;
 }
-.ld-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to bottom,rgba(26,20,16,.10) 0%,rgba(26,20,16,.35) 50%,rgba(26,20,16,.82) 100%);
+.ld-ring{
+  position:absolute;border-radius:50%;
+  border:1px solid rgba(184,137,58,.18);
+  opacity:0;animation:ldRingIn .9s ease forwards;
 }
-.ld-content{
-  position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:18px;
-  margin-top:auto;padding-bottom:clamp(60px,14vh,120px);
+.ld-ring:nth-child(1){inset:0;animation-delay:.3s}
+.ld-ring:nth-child(2){inset:-36px;border-style:dashed;border-color:rgba(194,90,58,.13);animation-delay:.45s;animation-name:ldRingIn,ldRingRot;animation-duration:.9s,80s;animation-timing-function:ease,linear;animation-iteration-count:1,infinite;animation-fill-mode:forwards,none}
+.ld-ring:nth-child(3){inset:-78px;border-color:rgba(184,137,58,.09);animation-delay:.6s}
+@keyframes ldRingIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes ldRingRot{to{transform:rotate(360deg)}}
+
+/* Contenido central */
+.ld-center{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:0;
 }
-.ld-names{
-  font-family:'Italianno','Great Vibes',cursive;font-size:64px;color:#faf8f3;
-  text-shadow:0 2px 20px rgba(0,0,0,.55);line-height:1;
-  opacity:0;animation:ldFade 1s ease .6s forwards;
-}
-.ld-date{
+
+/* Eyebrow */
+.ld-eyebrow{
   font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:12px;letter-spacing:5px;text-transform:uppercase;color:rgba(250,248,243,.7);
-  text-shadow:0 1px 6px rgba(0,0,0,.45);
-  opacity:0;animation:ldFade .8s ease .9s forwards;
+  font-size:12px;letter-spacing:7px;text-transform:uppercase;
+  color:rgba(122,90,26,.65);font-weight:500;
+  opacity:0;animation:ldFadeUp .7s ease .5s forwards;
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:12px;
 }
-.ld-btn{
-  position:relative;overflow:visible;
-  margin-top:14px;
-  padding:14px 38px;border-radius:40px;
-  border:1px solid rgba(184,137,58,.55);
-  background:rgba(184,137,58,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;letter-spacing:4px;text-transform:uppercase;
-  color:#faf8f3;cursor:pointer;
-  opacity:0;animation:ldFade .8s ease 1.3s forwards;
-  transition:background .3s,border-color .3s,transform .2s;
+.ld-eyebrow::before,.ld-eyebrow::after{
+  content:'';display:inline-block;width:28px;height:1px;
+  background:linear-gradient(to right,transparent,rgba(184,137,58,.6));
 }
-.ld-btn:hover{background:rgba(184,137,58,.26);border-color:var(--gold);transform:scale(1.03)}
-.ld-btn::after{
-  content:'';display:block;position:absolute;inset:-1px;border-radius:40px;
-  border:1px solid rgba(184,137,58,.35);
-  animation:ldBreathe 2.4s ease-in-out 1.5s infinite;pointer-events:none;
+.ld-eyebrow::after{background:linear-gradient(to left,transparent,rgba(184,137,58,.6))}
+
+/* Monograma */
+.ld-monogram{
+  font-family:'Italianno','Great Vibes',cursive;
+  font-size:clamp(96px,28vw,128px);
+  line-height:.85;
+  color:var(--cream);
+  letter-spacing:-2px;
+  opacity:0;animation:ldMonoIn 1.1s cubic-bezier(.22,1,.36,1) .4s forwards;
+  position:relative;
 }
-@keyframes ldBreathe{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.08);opacity:0}}
-.ld-video-layer{
-  position:absolute;inset:0;z-index:5;
-  opacity:0;pointer-events:none;
-  transition:opacity .4s ease;
+@keyframes ldMonoIn{
+  0%{opacity:0;transform:translateY(30px) scale(.92)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
 }
-.ld-video-layer.active{opacity:1;pointer-events:auto}
-.ld-sobre-video{width:100%;height:100%;object-fit:cover;background:#1a1410}
-@keyframes ldFade{to{opacity:1}}
+
+/* Separador dorado */
+.ld-sep{
+  width:48px;height:1px;
+  background:linear-gradient(to right,transparent,var(--gold) 50%,transparent);
+  margin:16px auto;
+  opacity:0;animation:ldFadeUp .6s ease .9s forwards;
+}
+
+/* Fecha */
+.ld-date-wrap{
+  display:flex;align-items:center;gap:10px;
+  opacity:0;animation:ldFadeUp .6s ease 1s forwards;
+}
+.ld-date-num{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;
+  font-size:48px;line-height:1;color:var(--cream);
+}
+.ld-date-mid{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.ld-date-mid-line{
+  width:32px;height:1px;
+  background:linear-gradient(to right,transparent,rgba(184,137,58,.55),transparent);
+}
+.ld-date-month{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;
+  font-size:11px;letter-spacing:6px;text-transform:uppercase;color:var(--gold-deep);
+}
+
+/* Ciudad */
+.ld-city{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;
+  font-size:13px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(107,36,16,.55);
+  opacity:0;animation:ldFadeUp .6s ease 1.1s forwards;
+  margin-top:8px;
+}
+
+/* Barra de progreso */
+.ld-progress-wrap{
+  width:80px;height:1px;background:rgba(184,137,58,.15);
+  margin:32px auto 0;overflow:hidden;border-radius:2px;
+  opacity:0;animation:ldFadeUp .5s ease 1.3s forwards;
+}
+.ld-progress-bar{
+  height:100%;width:0;border-radius:2px;
+  background:linear-gradient(to right,var(--gold-deep),var(--gold));
+  animation:ldProgress 2s cubic-bezier(.4,0,.2,1) 1.4s forwards;
+  box-shadow:0 0 8px rgba(184,137,58,.5);
+}
+@keyframes ldProgress{0%{width:0}100%{width:100%}}
+
+/* Hint toca */
+.ld-hint{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:12px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(122,90,26,.5);
+  opacity:0;animation:ldFadeUp .5s ease 2.4s forwards,ldPulse 2.5s ease 3s infinite;
+  margin-top:12px;
+}
+@keyframes ldPulse{0%,100%{opacity:.5}50%{opacity:.85}}
+@keyframes ldFadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* Diamante central decorativo */
+.ld-diamond{
+  width:7px;height:7px;
+  background:linear-gradient(135deg,var(--gold-lt),var(--gold),var(--gold-deep));
+  transform:rotate(45deg);border-radius:1px;
+  box-shadow:0 0 10px rgba(184,137,58,.4);
+  opacity:0;animation:ldFadeUp .5s ease 1.6s forwards;
+  margin:0 auto;
+}
+
 #loader.dismissing{
-  opacity:0;transform:scale(1.04);
-  transition:opacity .8s ease,transform .8s ease;
+  opacity:0;transform:scale(1.03);
+  transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
 }
 
 /* ── MUSIC BTN · VINYL ────────────────────────────────── */
@@ -1301,18 +1394,44 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 <body>
 <div class="invite-wrap">
 
-<!-- LOADER · SOBRE -->
-<div id="loader">
-  <div class="ld-bg" aria-hidden="true"></div>
-  <div class="ld-overlay" aria-hidden="true"></div>
-  <div class="ld-content">
-    <div class="ld-names">J &amp; E</div>
-    <p class="ld-date">17 · Octubre · 2026</p>
-    <button class="ld-btn" onclick="openEnvelope()">Toca para abrir</button>
+<!-- LOADER EDITORIAL -->
+<div id="loader" onclick="dismissLoader()" role="button" tabindex="0" aria-label="Abrir invitación">
+
+  <!-- Corners decorativos -->
+  <div class="ld-corner tl" aria-hidden="true"></div>
+  <div class="ld-corner tr" aria-hidden="true"></div>
+  <div class="ld-corner bl" aria-hidden="true"></div>
+  <div class="ld-corner br" aria-hidden="true"></div>
+
+  <!-- Anillos concéntricos -->
+  <div class="ld-rings" aria-hidden="true">
+    <div class="ld-ring"></div>
+    <div class="ld-ring"></div>
+    <div class="ld-ring"></div>
   </div>
-  <div class="ld-video-layer" id="videoLayer">
-    <video class="ld-sobre-video" id="sobreVideo" src="sobre.mp4" muted playsinline preload="auto"></video>
+
+  <!-- Contenido -->
+  <div class="ld-center">
+    <p class="ld-eyebrow">Nuestra Boda</p>
+    <div class="ld-monogram">J&amp;E</div>
+    <div class="ld-sep"></div>
+    <div class="ld-date-wrap">
+      <span class="ld-date-num">17</span>
+      <div class="ld-date-mid">
+        <div class="ld-date-mid-line"></div>
+        <span class="ld-date-month">Octubre</span>
+        <div class="ld-date-mid-line"></div>
+      </div>
+      <span class="ld-date-num">26</span>
+    </div>
+    <p class="ld-city">Corregidora · Querétaro</p>
+    <div class="ld-diamond" aria-hidden="true"></div>
+    <div class="ld-progress-wrap" aria-hidden="true">
+      <div class="ld-progress-bar"></div>
+    </div>
+    <p class="ld-hint">Toca para abrir</p>
   </div>
+
 </div>
 
 <!-- PROGRESS BAR -->
@@ -1332,7 +1451,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
   <div class="vinyl-spin">
     <div class="vinyl-disc">
       <div class="vinyl-sheen"></div>
-      <div class="vinyl-label-text">L&amp;F<small>2026</small></div>
+      <div class="vinyl-label-text">J&amp;E<small>2026</small></div>
       <div class="vinyl-hole"></div>
     </div>
   </div>
@@ -1833,32 +1952,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ── ENVELOPE OPEN ───────────────────────────────────── */
-let envelopeOpened = false;
-function openEnvelope() {
-  if (envelopeOpened) return;
-  envelopeOpened = true;
-  const content = document.querySelector('.ld-content');
-  const overlay = document.querySelector('.ld-overlay');
-  const layer = document.getElementById('videoLayer');
-  const vid = document.getElementById('sobreVideo');
-  if (content) { content.style.transition = 'opacity .4s ease'; content.style.opacity = '0'; content.style.pointerEvents = 'none'; }
-  if (overlay) { overlay.style.transition = 'opacity .5s ease'; overlay.style.opacity = '0'; }
-  if (!vid) { setTimeout(dismissLoader, 600); return; }
-  // play() debe llamarse sincronamente dentro del handler de tap (iOS)
-  const playPromise = vid.play();
-  layer.classList.add('active');
-  if (playPromise !== undefined) {
-    playPromise.then(function() {
-      vid.addEventListener('ended', function() { setTimeout(dismissLoader, 400); }, { once: true });
-    }).catch(function() {
-      setTimeout(dismissLoader, 600);
-    });
-  } else {
-    vid.addEventListener('ended', function() { setTimeout(dismissLoader, 400); }, { once: true });
-  }
-  // Safety: dismissa si el video no termina en 15s
-  setTimeout(function() { if (document.getElementById('loader')) dismissLoader(); }, 15000);
-}
+let _loaderDismissed = false;
+/* openEnvelope eliminado — loader se cierra con dismissLoader() directo */
 
 function toggleMusic() {
   const a = document.getElementById('bgMusic');
@@ -1881,6 +1976,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function dismissLoader() {
+  if (_loaderDismissed) return;
+  _loaderDismissed = true;
   const loader = document.getElementById('loader');
   if (!loader) return;
   const bgm = document.getElementById('bgMusic');
