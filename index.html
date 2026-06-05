@@ -513,6 +513,14 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 .corner.br{bottom:12px;right:12px;border-bottom-width:1px;border-right-width:1px}
 .corner.on{border-color:rgba(189,78,30,.3)}
 
+/* ── FLORAL SECTION BACKGROUNDS ──────────────────────── */
+.sec-floral{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+  opacity:.50;
+}
+.sec-floral ~ *{position:relative;z-index:1;}
+
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
   .loc-card .loc-med-arc{stroke-dashoffset:78}
@@ -688,6 +696,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 
 <!-- ════════════════ 4. UBICACIONES ═════════════════════ -->
 <section id="location">
+  <div class="sec-floral" style="background-image:url('./bg-floral-4.jpeg')"></div>
   <span class="lbl">¿Dónde y cuándo?</span>
   <h2 class="ttl">La Celebración</h2>
   <div class="gline"></div>
@@ -835,6 +844,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 
 <!-- ════════════════ 7. DRESSCODE ═══════════════════════ -->
 <section id="dresscode">
+  <div class="sec-floral" style="background-image:url('./bg-floral-5.jpeg')"></div>
   <span class="lbl">Vestimenta</span>
   <h2 class="ttl">Código de Vestimenta</h2>
   <div class="gline"></div>
@@ -940,6 +950,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 
 <!-- ════════════════ 9. GALERÍA ═════════════════════════ -->
 <section id="gallery">
+  <div class="sec-floral" style="background-image:url('./bg-floral-6.jpeg');opacity:.45"></div>
   <div class="gallery-head">
     <span class="lbl">Nuestra historia</span>
     <h2 class="ttl">Galería</h2>
@@ -974,6 +985,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 
 <!-- ════════════════ 11. RSVP ═══════════════════════════ -->
 <section id="rsvp">
+  <div class="sec-floral" style="background-image:url('./bg-floral-3.jpeg')"></div>
   <span class="lbl">Confirmación de asistencia</span>
   <h2 class="ttl">¿Nos acompañas?</h2>
   <div class="gline"></div>

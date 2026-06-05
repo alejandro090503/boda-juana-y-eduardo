@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "boda-fer-y-lupita",
+      "name": "boda-juana-y-eduardo",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-p", "3483", "C:\\Users\\aleja\\boda-fer-y-lupita"],
-      "port": 3483
+      "runtimeArgs": ["serve", "-p", "3484", "C:\\Users\\aleja\\boda-juana-y-eduardo"],
+      "port": 3484
     }
   ]
 }
