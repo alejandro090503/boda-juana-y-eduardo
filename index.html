@@ -36,12 +36,17 @@
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
   background:var(--ink);color:var(--cream);
-  background-image:var(--paper-tx);
   font-family:'Lato',sans-serif;font-weight:400;font-size:16px;
   line-height:1.5;
-  overflow-x:hidden;max-width:430px;margin:0 auto;
   -webkit-tap-highlight-color:transparent;
+  margin:0;
+}
+.invite-wrap{
+  max-width:430px;margin:0 auto;
+  overflow-x:hidden;
+  background-image:var(--paper-tx);
   box-shadow:0 0 60px rgba(107,36,16,.06);
+  position:relative;
 }
 section{padding:64px 22px}
 
@@ -1113,9 +1118,12 @@ footer{
 .sdiv{height:24px}
 
 /* ── GALLERY · WHEEL ──────────────────────────────────── */
-#gallery{background:var(--ink3);padding:60px 0 80px;position:relative;overflow:visible;
-  /* overflow:visible + sin mask para que el 3D del carrusel funcione */
-  -webkit-mask-image:none!important;mask-image:none!important;}
+#gallery{
+  background:var(--ink3);padding:60px 0 80px;
+  max-width:430px;margin:0 auto;
+  position:relative;overflow:visible;
+  /* NO overflow:hidden, NO mask-image, NO box-shadow — nada que aplana preserve-3d */
+}
 #gallery>.lbl,#gallery>.ttl,#gallery>.gline{padding-left:22px;padding-right:22px}
 .gallery-head{text-align:center;margin-bottom:8px;padding:0 26px;}
 .gallery-sub{font-family:'Great Vibes',cursive;color:var(--peach);font-size:32px;line-height:1;margin-top:8px;}
@@ -1290,6 +1298,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
   </style>
 </head>
 <body>
+<div class="invite-wrap">
 
 <!-- LOADER · SOBRE -->
 <div id="loader">
@@ -1714,6 +1723,8 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 </section>
 
 
+</div><!-- /invite-wrap (cerrar antes de gallery para no aplanar 3D) -->
+
 <!-- ════════════════ 9. GALERÍA ═════════════════════════ -->
 <section id="gallery">
   <div class="gallery-head">
@@ -1742,6 +1753,8 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
   <button id="lightbox-close" aria-label="Cerrar">&#x2715;</button>
 </div>
 
+
+<div class="invite-wrap">
 
 <!-- ════════════════ 11. RSVP ═══════════════════════════ -->
 <section id="rsvp">
@@ -1807,6 +1820,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
     <span>@elysium.invitaciones</span>
   </a>
 </footer>
+</div><!-- /invite-wrap -->
 
 
 <!-- GSAP -->
