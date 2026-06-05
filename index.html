@@ -1117,62 +1117,63 @@ footer{
 }
 .sdiv{height:24px}
 
-/* ── GALLERY · WHEEL ──────────────────────────────────── */
+/* ── GALLERY · SNAP SCROLL ────────────────────────────── */
 #gallery{
-  background:var(--ink3);padding:60px 0 80px;
+  background:var(--ink3);padding:60px 0 60px;
   max-width:430px;margin:0 auto;
-  position:relative;overflow:visible;
-  /* NO overflow:hidden, NO mask-image, NO box-shadow — nada que aplana preserve-3d */
+  position:relative;overflow:hidden;
 }
-#gallery>.lbl,#gallery>.ttl,#gallery>.gline{padding-left:22px;padding-right:22px}
-.gallery-head{text-align:center;margin-bottom:8px;padding:0 26px;}
+.gallery-head{text-align:center;margin-bottom:32px;padding:0 26px;}
 .gallery-sub{font-family:'Great Vibes',cursive;color:var(--peach);font-size:32px;line-height:1;margin-top:8px;}
-/* ── GALLERY · RUEDA 3D DRAG (nelvi-yessica) ───────────── */
-.wheel-scene{
-  position:relative;
-  width:100%;
-  height:520px;
-  margin:40px auto 0;
-  perspective:1400px;
-  transform-style:preserve-3d;
-  overflow:visible;
+.gal-scroll{
+  display:flex;gap:16px;
+  overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  padding:0 calc(50% - 130px);
+  scrollbar-width:none;
 }
-.wheel-ring{
-  position:absolute;
-  width:100%;height:100%;
-  transform-style:preserve-3d;
-  cursor:grab;
-}
-.wheel-ring.dragging{cursor:grabbing}
-.wheel-card{
-  position:absolute;
-  width:200px;height:280px;
-  left:50%;top:50%;
-  margin-left:-100px;margin-top:-140px;
+.gal-scroll::-webkit-scrollbar{display:none}
+.gal-card{
+  flex:0 0 260px;
+  height:380px;
   border-radius:18px;
   overflow:hidden;
+  scroll-snap-align:center;
   border:1.5px solid rgba(184,137,58,.35);
-  box-shadow:0 12px 40px rgba(60,18,8,.22), 0 2px 8px rgba(60,18,8,.12);
-  user-select:none;
-  -webkit-user-select:none;
-  /* Placeholder cálido mientras carga la imagen */
-  background:linear-gradient(135deg, #f5e9d4 0%, #ecd9bc 50%, #e8d0b0 100%);
+  box-shadow:0 12px 40px rgba(60,18,8,.18),0 2px 8px rgba(60,18,8,.10);
+  background:linear-gradient(135deg,#f5e9d4,#ecd9bc,#e8d0b0);
+  transition:transform .4s ease,box-shadow .4s ease;
 }
-.wheel-card img{
+.gal-card.active{
+  transform:scale(1.04);
+  box-shadow:0 18px 50px rgba(60,18,8,.28),0 4px 12px rgba(60,18,8,.14);
+}
+.gal-card img{
   width:100%;height:100%;
   object-fit:cover;object-position:center;
   display:block;
-  pointer-events:none;
+}
+.gal-dots{
+  display:flex;justify-content:center;gap:8px;
+  margin-top:24px;
+}
+.gal-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(184,137,58,.25);
+  border:none;padding:0;cursor:pointer;
+  transition:all .3s ease;
+}
+.gal-dot.active{
+  background:var(--gold);
+  width:24px;border-radius:4px;
+  box-shadow:0 0 8px rgba(184,137,58,.4);
 }
 .gal-hint{
   font-family:'Cormorant Garamond',serif;
-  font-style:italic;
-  font-size:13px;
-  letter-spacing:3px;
-  color:var(--gold-deep);
-  margin-top:24px;
-  text-align:center;
-  opacity:.7;
+  font-style:italic;font-size:13px;letter-spacing:3px;
+  color:var(--gold-deep);margin-top:16px;
+  text-align:center;opacity:.7;
 }
 #lightbox{position:fixed;inset:0;z-index:9990;display:none;align-items:center;justify-content:center;padding:clamp(16px,4vw,48px);background:rgba(8,12,24,.85);backdrop-filter:blur(18px) saturate(1.15);-webkit-backdrop-filter:blur(18px) saturate(1.15);opacity:0;cursor:zoom-out;}
 #lightbox.is-open{display:flex;}
@@ -1723,8 +1724,6 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 </section>
 
 
-</div><!-- /invite-wrap (cerrar antes de gallery para no aplanar 3D) -->
-
 <!-- ════════════════ 9. GALERÍA ═════════════════════════ -->
 <section id="gallery">
   <div class="gallery-head">
@@ -1734,17 +1733,16 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
     <div class="gallery-sub rv">Juana &amp; Eduardo</div>
   </div>
 
-  <div class="wheel-scene rv" id="wheel-scene">
-    <div class="wheel-ring" id="wheel-ring">
-      <div class="wheel-card"><img src="./g01.jpeg" alt="Juana y Eduardo" loading="eager"></div>
-      <div class="wheel-card"><img src="./g02.jpeg" alt="Juana y Eduardo" loading="eager"></div>
-      <div class="wheel-card"><img src="./g03.jpeg" alt="Juana y Eduardo" loading="eager"></div>
-      <div class="wheel-card"><img src="./g04.jpeg" alt="Juana y Eduardo" loading="eager"></div>
-      <div class="wheel-card"><img src="./g05.jpeg" alt="Juana y Eduardo" loading="eager"></div>
-      <div class="wheel-card"><img src="./g06.jpeg" alt="Juana y Eduardo" loading="eager"></div>
-    </div>
+  <div class="gal-scroll" id="galScroll">
+    <div class="gal-card"><img src="./g01.jpeg" alt="Juana y Eduardo" loading="lazy"></div>
+    <div class="gal-card"><img src="./g02.jpeg" alt="Juana y Eduardo" loading="lazy"></div>
+    <div class="gal-card"><img src="./g03.jpeg" alt="Juana y Eduardo" loading="lazy"></div>
+    <div class="gal-card"><img src="./g04.jpeg" alt="Juana y Eduardo" loading="lazy"></div>
+    <div class="gal-card"><img src="./g05.jpeg" alt="Juana y Eduardo" loading="lazy"></div>
+    <div class="gal-card"><img src="./g06.jpeg" alt="Juana y Eduardo" loading="lazy"></div>
   </div>
-  <p class="gal-hint">← Arrastra para girar →</p>
+  <div class="gal-dots" id="galDots"></div>
+  <p class="gal-hint">← Desliza para ver más →</p>
 </section>
 
 <!-- LIGHTBOX -->
@@ -1752,9 +1750,6 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
   <img id="lightbox-img" src="" alt="">
   <button id="lightbox-close" aria-label="Cerrar">&#x2715;</button>
 </div>
-
-
-<div class="invite-wrap">
 
 <!-- ════════════════ 11. RSVP ═══════════════════════════ -->
 <section id="rsvp">
@@ -2173,113 +2168,69 @@ function initGallery(){
     {opacity:1, y:0, duration:1, stagger:.1,
      scrollTrigger:{trigger:'.gallery-head', start:'top 80%'}});
 
-  /* ── Rueda 3D con inercia (nelvi-yessica) ── */
-  (function initWheel(){
-    var cards  = document.querySelectorAll('.wheel-card');
-    var ring   = document.getElementById('wheel-ring');
-    if (!ring || cards.length === 0) return;
+  /* ── Snap-scroll gallery con dots + lightbox ── */
+  var scroll = document.getElementById('galScroll');
+  var cards  = document.querySelectorAll('.gal-card');
+  var dotsC  = document.getElementById('galDots');
+  if (!scroll || !cards.length) return;
 
-    var n       = cards.length;
-    var radius  = 210;
-    var rot     = 0;
-    var vel     = 0;
-    var isDrag  = false;
-    var startX  = 0;
-    var startRot = 0;
-    var lastX   = 0;
-    var rafId   = null;
-
-    cards.forEach(function(card, i){
-      card.style.transform = 'rotateY(' + (360 / n * i) + 'deg) translateZ(' + radius + 'px)';
+  /* Crear dots */
+  cards.forEach(function(_, i){
+    var d = document.createElement('button');
+    d.className = 'gal-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Foto ' + (i+1));
+    d.addEventListener('click', function(){
+      cards[i].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
     });
+    dotsC.appendChild(d);
+  });
+  var dots = dotsC.querySelectorAll('.gal-dot');
 
-    function setRot(r){
-      rot = r;
-      gsap.set(ring, { rotateY: rot });
-    }
+  /* Detectar card activa al hacer scroll */
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      var idx = Array.from(cards).indexOf(e.target);
+      if (e.isIntersecting && e.intersectionRatio > 0.5) {
+        cards.forEach(function(c){ c.classList.remove('active'); });
+        e.target.classList.add('active');
+        dots.forEach(function(d, di){ d.classList.toggle('active', di === idx); });
+      }
+    });
+  }, { root: scroll, threshold: 0.5 });
+  cards.forEach(function(c){ observer.observe(c); });
 
-    function inertia(){
-      if (Math.abs(vel) < 0.05){ vel = 0; return; }
-      vel *= 0.94;
-      setRot(rot + vel);
-      rafId = requestAnimationFrame(inertia);
-    }
+  /* Cards reveal on scroll */
+  gsap.from('.gal-card', {opacity:0, y:30, scale:.92, duration:.7, stagger:.1, ease:'power3.out',
+    scrollTrigger:{trigger:'#gallery', start:'top 80%', once:true}});
 
-    ring.addEventListener('mousedown', function(e){
-      cancelAnimationFrame(rafId);
-      isDrag = true; vel = 0;
-      startX = e.clientX; startRot = rot; lastX = e.clientX;
-      ring.classList.add('dragging');
-    });
-    window.addEventListener('mousemove', function(e){
-      if (!isDrag) return;
-      var dx = e.clientX - startX;
-      vel = (e.clientX - lastX) * 0.5;
-      lastX = e.clientX;
-      setRot(startRot + dx * 0.45);
-    });
-    window.addEventListener('mouseup', function(){
-      if (!isDrag) return;
-      isDrag = false;
-      ring.classList.remove('dragging');
-      rafId = requestAnimationFrame(inertia);
-    });
-
-    ring.addEventListener('touchstart', function(e){
-      cancelAnimationFrame(rafId);
-      isDrag = true; vel = 0;
-      startX = e.touches[0].clientX; startRot = rot; lastX = startX;
-    }, { passive: true });
-    window.addEventListener('touchmove', function(e){
-      if (!isDrag) return;
-      var dx = e.touches[0].clientX - startX;
-      vel = (e.touches[0].clientX - lastX) * 0.5;
-      lastX = e.touches[0].clientX;
-      setRot(startRot + dx * 0.45);
-    }, { passive: true });
-    window.addEventListener('touchend', function(){
-      if (!isDrag) return;
-      isDrag = false;
-      rafId = requestAnimationFrame(inertia);
-    });
-  })();
-
-  /* Lightbox al click en cada card */
-  (function(){
-    var lb    = document.getElementById('lightbox');
-    var lbImg = document.getElementById('lightbox-img');
-    var lbCls = document.getElementById('lightbox-close');
-    if(!lb || !lbImg) return;
-    var open = false;
-    function openLightbox(src, alt){
-      if(open) return; open = true;
-      lbImg.src = src; lbImg.alt = alt || '';
-      lb.classList.add('is-open'); lb.setAttribute('aria-hidden','false');
-      document.body.style.overflow = 'hidden';
-      gsap.set(lb, {opacity:0}); gsap.set(lbImg, {opacity:0, scale:.88});
-      gsap.to(lb,    {opacity:1, duration:.38, ease:'power2.out'});
-      gsap.to(lbImg, {opacity:1, scale:1, duration:.55, ease:'power3.out', delay:.05});
-    }
-    function closeLightbox(){
-      if(!open) return; open = false;
-      gsap.to(lbImg, {opacity:0, scale:.88, duration:.32, ease:'power2.in'});
-      gsap.to(lb, {opacity:0, duration:.35, ease:'power2.in', delay:.05,
-        onComplete:function(){ lb.classList.remove('is-open'); lb.setAttribute('aria-hidden','true'); document.body.style.overflow=''; lbImg.removeAttribute('src'); }});
-    }
-    document.querySelectorAll('.wheel-card').forEach(function(card){
-      var img = card.querySelector('img'); if(!img) return;
-      card.addEventListener('click', function(e){
-        // Solo abrir lightbox si no fue un drag
-        if (Math.abs(parseFloat(card.dataset.dragDelta)||0) < 5){
-          e.preventDefault(); e.stopPropagation();
-          openLightbox(img.currentSrc||img.src, img.alt);
-        }
-      });
-    });
-    lb.addEventListener('click', function(e){ if(e.target===lb) closeLightbox(); });
-    lbCls.addEventListener('click', closeLightbox);
-    document.addEventListener('keydown', function(e){ if(e.key==='Escape'&&open) closeLightbox(); });
-  })();
+  /* Lightbox */
+  var lb    = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lightbox-img');
+  var lbCls = document.getElementById('lightbox-close');
+  if (!lb || !lbImg) return;
+  var lbOpen = false;
+  function openLB(src, alt){
+    if (lbOpen) return; lbOpen = true;
+    lbImg.src = src; lbImg.alt = alt || '';
+    lb.classList.add('is-open'); lb.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    gsap.set(lb, {opacity:0}); gsap.set(lbImg, {opacity:0, scale:.88});
+    gsap.to(lb,    {opacity:1, duration:.38, ease:'power2.out'});
+    gsap.to(lbImg, {opacity:1, scale:1, duration:.55, ease:'power3.out', delay:.05});
+  }
+  function closeLB(){
+    if (!lbOpen) return; lbOpen = false;
+    gsap.to(lbImg, {opacity:0, scale:.88, duration:.32, ease:'power2.in'});
+    gsap.to(lb, {opacity:0, duration:.35, ease:'power2.in', delay:.05,
+      onComplete:function(){ lb.classList.remove('is-open'); lb.setAttribute('aria-hidden','true'); document.body.style.overflow=''; lbImg.removeAttribute('src'); }});
+  }
+  cards.forEach(function(card){
+    var img = card.querySelector('img'); if (!img) return;
+    card.addEventListener('click', function(){ openLB(img.currentSrc||img.src, img.alt); });
+  });
+  lb.addEventListener('click', function(e){ if (e.target === lb) closeLB(); });
+  lbCls.addEventListener('click', closeLB);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && lbOpen) closeLB(); });
 }
 
 /* ── SCROLL ANIMATIONS ───────────────────────────────── */
