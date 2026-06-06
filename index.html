@@ -1871,7 +1871,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
   <span class="lbl">Confirmación de asistencia</span>
   <h2 class="ttl">¿Nos acompañas?</h2>
   <div class="gline"></div>
-  <p class="rsvp-sub">Confirma antes del<br><span class="rsvp-dl">1 de agosto de 2026</span></p>
+  <p class="rsvp-sub">Confirma antes del<br><span class="rsvp-dl">1 de septiembre de 2026</span></p>
 
   <p class="rsvp-msg-quote">
     "Estamos emocionados de compartir este momento<br>
@@ -2097,7 +2097,7 @@ function toast(msg) {
 /* ── RSVP PANEL INTEGRATION ──────────────────────────── */
 const PANEL_API = 'https://panel-invitados.vercel.app/api/confirmar';
 const RSVP_URL  = 'https://boda-juana-y-eduardo.vercel.app';
-const DEADLINE  = new Date(2026, 7, 1, 23, 59, 59, 999);
+const DEADLINE  = new Date(2026, 8, 1, 23, 59, 59, 999);
 
 let _pases  = 1;
 let _para   = '';
@@ -2121,11 +2121,18 @@ function initRSVP() {
   const btnText   = document.getElementById('rsvpBtnText');
   const feedback  = document.getElementById('rsvp-feedback');
 
-  if (numEl) numEl.textContent = _pases;
   if (lblEl) lblEl.textContent = _pases === 1 ? 'persona' : 'personas';
   if (_para && note) {
     note.textContent = 'Esta invitación es para ' + _para;
     note.style.display = 'block';
+  }
+  // Guard silencioso: si hay ?para=, bloqueamos botones hasta saber pases reales del panel
+  if (_para) {
+    if (numEl) numEl.textContent = '…';
+    btnYes.disabled = true;
+    btnNo.disabled  = true;
+  } else {
+    if (numEl) numEl.textContent = _pases;
   }
 
   btnYes.addEventListener('click', () => selectRsvp('yes'));
@@ -2137,6 +2144,13 @@ function initRSVP() {
       .then(r => r.json())
       .then(resp => {
         const d = resp.invitado;
+        if (d && typeof d.pases === 'number' && d.pases > 0 && d.pases <= 20) {
+          _pases = d.pases;  // AUTORITATIVO — ignoramos manipulación de ?pases=
+        }
+        if (numEl) numEl.textContent = _pases;
+        if (lblEl) lblEl.textContent = _pases === 1 ? 'persona' : 'personas';
+        btnYes.disabled = false;
+        btnNo.disabled  = false;
         if (d && (d.estado === 'confirmado' || d.estado === 'declino')) {
           if (d.nombres_confirmados && d.nombres_confirmados.length) {
             _savedNames = d.nombres_confirmados.slice();
@@ -2147,7 +2161,11 @@ function initRSVP() {
             ? '¡Ya tienes confirmada tu asistencia! Puedes actualizar tu respuesta.'
             : 'Ya tienes registrado que no podrás asistir. Puedes cambiar tu respuesta.';
         }
-      }).catch(() => {});
+      }).catch(() => {
+        if (numEl) numEl.textContent = _pases;
+        btnYes.disabled = false;
+        btnNo.disabled  = false;
+      });
   }
 
   if (Date.now() > DEADLINE.getTime()) {
